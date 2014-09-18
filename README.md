@@ -37,3 +37,28 @@ lex, yacc, gccが必要です。
   |- LISENCE
 ```
 
+## 実行例
+```
+***********************************************************
+ Lambda Evaluator v1.1.3, Copyright (C) 2014 Daichi Teruya
+***********************************************************
+
+This program comes with ABSOLUTELY NO WARRANTY. This is free
+software, and you are welcome to redistribute it under certain
+conditions. See the GNU General Public License for more details.
+
+CONS ::= (lambda x.(lambda y.(lambda z.((z x) y))))
+        DEFINED CONS -> (lambda x.(lambda y.(lambda z.(((z)(x))(y)))))
+
+CAR ::= (lambda z.(z (lambda x.(lambda y.x))))
+        DEFINED CAR -> (lambda z.((z)(lambda x.(lambda y.(x)))))
+
+CDR ::= (lambda z.(z (lambda x.(lambda y.y))))
+        DEFINED CDR -> (lambda z.((z)(lambda x.(lambda y.(y)))))
+
+(CAR ((CONS a) b))
+        -> (a)
+
+(CDR ((CONS a) b))
+        -> (b)
+```
