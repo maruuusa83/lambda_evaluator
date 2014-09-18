@@ -84,6 +84,17 @@ lambda_term
 
         lambda_free_identifier($1);
     }
+    | NAME
+    {
+        LambdaTerm *term = lambda_get_defined_term($1);
+
+        if (term == NULL){
+            yyerror("undefined identifier\n");
+            return (1);
+        }
+
+        $$ = term;
+    }
     | abstraction
     {
         $$ = lambda_create_term_abs($1);

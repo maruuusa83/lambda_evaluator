@@ -204,6 +204,21 @@ int lambda_add_defined_term(char *name, LambdaTerm *term)
 	return (0);
 }
 
+LambdaTerm *lambda_get_defined_term(char *name)
+{
+	LambdaDefinedTerm *pos = &defined_term_list;
+
+	while (pos->next != NULL){
+		pos = pos->next;
+
+		if (strcmp(pos->name, name) == 0){
+			return (lambda_create_term_clone(pos->term));
+		}
+	}
+
+	return (NULL);
+}
+
 LambdaTerm *lambda_eval(LambdaTerm *term)
 {
 	LambdaTerm *result = NULL;
