@@ -54,6 +54,13 @@ typedef struct _lambda_term {
 	} data;
 } LambdaTerm;
 
+typedef struct _lambda_defined_term {
+	struct _lambda_defined_term *next;
+	char *name;
+	LambdaTerm *term;
+} LambdaDefinedTerm;
+
+
 /* function prototype declaration */
 char *lambda_create_identifier(char *str);
 void lambda_free_identifier(char *id);
@@ -69,6 +76,8 @@ LambdaTerm *lambda_create_term_abs(LambdaAbstraction *abs);
 LambdaTerm *lambda_create_term_app(LambdaTerm *t1, LambdaTerm *t2);
 LambdaTerm *lambda_create_term_clone(LambdaTerm *term);
 
+int lambda_add_defined_term(char *name, LambdaTerm *term);
+LambdaTerm *lambda_get_defined_term(char *name);
 
 LambdaTerm *lambda_eval(LambdaTerm *term);
 LambdaTerm *lambda_application(LambdaTerm *terget, char *target_id, LambdaTerm *arg);

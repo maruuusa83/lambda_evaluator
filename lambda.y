@@ -23,12 +23,14 @@
 
 %union {
     char *identifier;
+    char *name;
     LambdaTerm *lambda_term;
     LambdaAbstraction *lambda_abs;
 }
 
 %token LAMBDA DEFUN LP RP PERIOD CR
 %token <identifier> IDENTIFIER
+%token <name> NAME
 
 %type <lambda_term> lambda_term
 %type <lambda_abs>  abstraction
@@ -55,6 +57,24 @@ line
         
         lambda_free_term(result);
     }
+    | NAME DEFUN lambda_term CR
+    {
+        LambdaTerm *result = NULL;
+
+        result = lambda_eval($3);
+        lambda_free_term($3);
+
+        if (lambda_add_defined_term($1, result) == 0){
+			printf("\tDEFINED %s -> ", $1);
+			lambda_print_term(result);
+			printf("\n\n");
+        }
+        else {
+            printf("\t%s -> ERROR : already used identifier\n", $1);
+        }
+
+        lambda_free_term(result);
+    }
     ;
 
 lambda_term
@@ -63,6 +83,17 @@ lambda_term
         $$ = lambda_create_term_id($1);
 
         lambda_free_identifier($1);
+    }
+    | NAME
+    {
+        LambdaTerm *term = lambda_get_defined_term($1);
+
+        if (term == NULL){
+            yyerror("undefined identifier\n");
+            return (1);
+        }
+
+        $$ = term;
     }
     | abstraction
     {
@@ -104,6 +135,7 @@ abstraction
 
 %%
 
+
 int yyerror(char const *str)
 {
     extern char *yytext;
@@ -117,6 +149,9 @@ int main(void)
 {
     extern int yyparse(void);
     extern FILE *yyin;
+    extern LambdaDefinedTerm defined_term_list;
+
+    defined_term_list.next = NULL;
 
     printf("***********************************************************\n");
     printf(" Lambda Evaluator v0.1.0, Copyright (C) 2014 Daichi Teruya \n");

@@ -36,9 +36,14 @@ int yywrap(void)
 ")"      { return (RP);     }
 "\n"     { return (CR);     }
 
-[A-Za-z][A-Za-z0-9]? {
+[a-z][0-9]? {
     yylval.identifier = lambda_create_identifier(yytext);
     return (IDENTIFIER);
+}
+
+[_A-Z][_A-Za-z0-9]* {
+    yylval.name = lambda_create_identifier(yytext);
+    return (NAME);
 }
 
 %%
