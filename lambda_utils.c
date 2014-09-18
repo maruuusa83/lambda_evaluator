@@ -17,6 +17,9 @@
  *******************************************************************************/
 #include "lambda_utils.h"
 
+/* global val */
+LambdaDefinedTerm defined_term_list;
+
 char *lambda_create_identifier(char *str)
 {
 	char *id = (char *)malloc((sizeof(char) * strlen(str)) + 1);
@@ -174,6 +177,31 @@ void lambda_free_term(LambdaTerm *term)
 	}
 
 	free(term);
+}
+
+int lambda_add_defined_term(char *name, LambdaTerm *term)
+{
+	LambdaDefinedTerm *pos = &defined_term_list;
+	LambdaDefinedTerm *new_defined_term;
+
+	while (pos->next != NULL){
+		pos = pos->next;
+
+		if (strcmp(pos->name, name) == 0){
+			return (-1);
+		}
+	}
+
+	new_defined_term = (LambdaDefinedTerm *)malloc(sizeof(LambdaDefinedTerm));
+
+	new_defined_term->next = NULL;
+	new_defined_term->name = (char *)malloc(strlen(name) + 1);
+	strcpy(new_defined_term->name, name);
+	new_defined_term->term = lambda_create_term_clone(term);
+
+	pos->next = new_defined_term;
+
+	return (0);
 }
 
 LambdaTerm *lambda_eval(LambdaTerm *term)

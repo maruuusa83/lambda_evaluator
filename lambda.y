@@ -64,9 +64,14 @@ line
         result = lambda_eval($3);
         lambda_free_term($3);
 
-        printf("\tDEFINED %s -> ", $1);
-        lambda_print_term(result);
-        printf("\n\n");
+        if (lambda_add_defined_term($1, result) == 0){
+			printf("\tDEFINED %s -> ", $1);
+			lambda_print_term(result);
+			printf("\n\n");
+        }
+        else {
+            printf("\t%s -> ERROR : already used identifier\n", $1);
+        }
 
         lambda_free_term(result);
     }
@@ -119,6 +124,7 @@ abstraction
 
 %%
 
+
 int yyerror(char const *str)
 {
     extern char *yytext;
@@ -132,6 +138,9 @@ int main(void)
 {
     extern int yyparse(void);
     extern FILE *yyin;
+    extern LambdaDefinedTerm defined_term_list;
+
+    defined_term_list.next = NULL;
 
     printf("***********************************************************\n");
     printf(" Lambda Evaluator v0.1.0, Copyright (C) 2014 Daichi Teruya \n");
