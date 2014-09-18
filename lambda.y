@@ -23,12 +23,14 @@
 
 %union {
     char *identifier;
+    char *name;
     LambdaTerm *lambda_term;
     LambdaAbstraction *lambda_abs;
 }
 
 %token LAMBDA DEFUN LP RP PERIOD CR
 %token <identifier> IDENTIFIER
+%token <name> NAME
 
 %type <lambda_term> lambda_term
 %type <lambda_abs>  abstraction
@@ -53,6 +55,19 @@ line
         lambda_print_term(result);
         printf("\n\n");
         
+        lambda_free_term(result);
+    }
+    | NAME DEFUN lambda_term CR
+    {
+        LambdaTerm *result = NULL;
+
+        result = lambda_eval($3);
+        lambda_free_term($3);
+
+        printf("\tDEFINED %s -> ", $1);
+        lambda_print_term(result);
+        printf("\n\n");
+
         lambda_free_term(result);
     }
     ;
