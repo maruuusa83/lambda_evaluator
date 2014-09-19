@@ -18,6 +18,8 @@
 #ifndef __LAMBDA_UTILS_H__
 #define __LAMBDA_UTILS_H__
 
+#define __LAMBDA_DEBUG__
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -46,6 +48,7 @@ typedef struct _lambda_abstraction {
 
 typedef struct _lambda_term {
 	LambdaTermType type;
+	int quote_flag;
 
 	union {
         char *identifier;

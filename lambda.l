@@ -30,6 +30,7 @@ int yywrap(void)
 %%
 
 "lambda" { return (LAMBDA); }
+"quote " { return (QUOTE);  }
 "::="    { return (DEFUN);  }
 "."      { return (PERIOD); }
 "("      { return (LP);     }
