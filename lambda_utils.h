@@ -18,7 +18,7 @@
 #ifndef __LAMBDA_UTILS_H__
 #define __LAMBDA_UTILS_H__
 
-#define __LAMBDA_DEBUG__
+//#define __LAMBDA_DEBUG__
 
 #include <stdlib.h>
 #include <stdio.h>
