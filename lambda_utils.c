@@ -92,6 +92,12 @@ LambdaTerm *lambda_application(LambdaTerm *target, char *target_id, LambdaTerm *
 	lambda_print_term(arg);
 	printf("\n");
 #endif /* __LAMBDA_DEBUG__ */
+	
+	if (target->quote_flag == 1){
+		result = lambda_create_term_clone(target);
+		result->quote_flag = 0;
+		return (result);
+	}
 
     switch (target->type){
 	  case ID:
@@ -144,6 +150,8 @@ LambdaTerm *lambda_create_term_clone(LambdaTerm *term)
 		break;
 	}
 
+	result->quote_flag = term->quote_flag;
+
 	return (result);
 }
 
@@ -152,6 +160,7 @@ LambdaTerm *lambda_create_term(LambdaTermType type)
 	LambdaTerm *e_term = (LambdaTerm *)malloc(sizeof(LambdaTerm));
 
 	e_term->type = type;
+	e_term->quote_flag = 0;
 
 	return (e_term);
 }
@@ -230,6 +239,12 @@ LambdaTerm *lambda_eval(LambdaTerm *term)
 	lambda_print_term(term);
 	printf("\n");
 #endif /* __LAMBDA_DEBUG__ */
+
+	if (term->quote_flag == 1){
+		result = lambda_create_term_clone(term);
+		result->quote_flag = 0;
+		return (result);
+	}
 
     switch (term->type){
 	  case ID:

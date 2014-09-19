@@ -28,7 +28,8 @@
     LambdaAbstraction *lambda_abs;
 }
 
-%token LAMBDA DEFUN LP RP PERIOD CR
+%token LAMBDA QUOTE
+%token DEFUN LP RP PERIOD CR
 %token <identifier> IDENTIFIER
 %token <name> NAME
 
@@ -120,6 +121,14 @@ lambda_term
 
         lambda_free_term(t1);
         lambda_free_term(t2);
+    }
+    | LP QUOTE lambda_term RP
+    {
+        LambdaTerm *result = lambda_create_term_clone($3);
+        result->quote_flag = 1;
+        $$ = result;
+
+        lambda_free_term($3);
     }
     ;
 
