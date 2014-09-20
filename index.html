@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Lambda evaluator : ">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Lambda evaluator</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/maruuusa83/lambda_evaluator">View on GitHub</a>
+
+          <h1 id="project_title">Lambda evaluator</h1>
+          <h2 id="project_tagline"></h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/maruuusa83/lambda_evaluator/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/maruuusa83/lambda_evaluator/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a name="lambda_evaluator" class="anchor" href="#lambda_evaluator"><span class="octicon octicon-link"></span></a>lambda_evaluator</h1>
+
+<h2>
+<a name="%E6%A6%82%E8%A6%81" class="anchor" href="#%E6%A6%82%E8%A6%81"><span class="octicon octicon-link"></span></a>概要</h2>
+
+<p>ラムダ項を与えるとラムダ計算します。<br>
+lex/yaccを使っています。</p>
+
+<h2>
+<a name="%E4%BD%BF%E3%81%84%E6%96%B9" class="anchor" href="#%E4%BD%BF%E3%81%84%E6%96%B9"><span class="octicon octicon-link"></span></a>使い方</h2>
+
+<div class="highlight highlight-bash"><pre><span class="nv">$ </span>make all
+<span class="nv">$ </span>./lambda
+</pre></div>
+
+<p>でコンパイルして実行すればよいです。<br>
+lex, yacc, gccが必要です。</p>
+
+<h2>
+<a name="%E3%81%A1%E3%82%87%E3%81%A3%E3%81%A8%E3%81%97%E3%81%9F%E4%BB%95%E6%A7%98" class="anchor" href="#%E3%81%A1%E3%82%87%E3%81%A3%E3%81%A8%E3%81%97%E3%81%9F%E4%BB%95%E6%A7%98"><span class="octicon octicon-link"></span></a>ちょっとした仕様</h2>
+
+<ul>
+<li>変数[a-zA-Z][a-zA-Z0-9]?はlambda項</li>
+<li>xが変数、Mがlambda項のとき、(lambda x.M)はlambda項</li>
+<li>MとNがともにlambda項のとき、(M N)はlambda項</li>
+</ul><p>この処理系では、lambda項でよく用いられる簡略記法は許容していません。厳密にこの構文に従っています。<br>
+つまり、(lambda xy.x)は、(lambda x.(lambda y.x))と記述されなければなりません。</p>
+
+<p>与えられたlambda項を最左最内戦略でベータ簡約します。</p>
+
+<h2>
+<a name="%E3%83%95%E3%82%A9%E3%83%AB%E3%83%80%E6%A7%8B%E6%88%90" class="anchor" href="#%E3%83%95%E3%82%A9%E3%83%AB%E3%83%80%E6%A7%8B%E6%88%90"><span class="octicon octicon-link"></span></a>フォルダ構成</h2>
+
+<pre><code>/ -- lambda.l
+  |- lambda.y
+  |- lambda_utils.h
+  |- lambda_utils.c
+  |
+  |- README.md
+  |- LISENCE
+</code></pre>
+
+<h2>
+<a name="%E5%AE%9F%E8%A1%8C%E4%BE%8B" class="anchor" href="#%E5%AE%9F%E8%A1%8C%E4%BE%8B"><span class="octicon octicon-link"></span></a>実行例</h2>
+
+<pre><code>***********************************************************
+ Lambda Evaluator v1.1.3, Copyright (C) 2014 Daichi Teruya
+***********************************************************
+
+This program comes with ABSOLUTELY NO WARRANTY. This is free
+software, and you are welcome to redistribute it under certain
+conditions. See the GNU General Public License for more details.
+
+CONS ::= (lambda x.(lambda y.(lambda z.((z x) y))))
+        DEFINED CONS -&gt; (lambda x.(lambda y.(lambda z.(((z)(x))(y)))))
+
+CAR ::= (lambda z.(z (lambda x.(lambda y.x))))
+        DEFINED CAR -&gt; (lambda z.((z)(lambda x.(lambda y.(x)))))
+
+CDR ::= (lambda z.(z (lambda x.(lambda y.y))))
+        DEFINED CDR -&gt; (lambda z.((z)(lambda x.(lambda y.(y)))))
+
+(CAR ((CONS a) b))
+        -&gt; (a)
+
+(CDR ((CONS a) b))
+        -&gt; (b)
+</code></pre>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Lambda evaluator maintained by <a href="https://github.com/maruuusa83">maruuusa83</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
