@@ -32,6 +32,7 @@ lex, yacc, gccが必要です。
   |- lambda.y
   |- lambda_utils.h
   |- lambda_utils.c
+  |- Makefile
   |
   |- README.md
   |- LISENCE
