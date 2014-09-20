@@ -163,7 +163,7 @@ int main(void)
     defined_term_list.next = NULL;
 
     printf("***********************************************************\n");
-    printf(" Lambda Evaluator v1.1.4, Copyright (C) 2014 Daichi Teruya \n");
+    printf(" Lambda Evaluator v1.2.0, Copyright (C) 2014 Daichi Teruya \n");
     printf("***********************************************************\n");
     printf("\n");
     printf("This program comes with ABSOLUTELY NO WARRANTY. This is free\n");
